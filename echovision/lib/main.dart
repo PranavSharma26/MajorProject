@@ -11,51 +11,56 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Build title',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.tealAccent),
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.blue),
       ),
       home: const HomePage(),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+  @override
+  State<StatefulWidget> createState() => HomeState();
+}
 
+class HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('App1')),
-      backgroundColor: Colors.teal,
+      appBar: AppBar(
+        title: const Text(
+          'Echovision',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+        ),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [Colors.cyan, Colors.blue]),
+                borderRadius: BorderRadius.circular(100)
+              ),
+              
+              child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                minimumSize: const Size(200, 300),
+                minimumSize: const Size(200, 250),
+                backgroundColor: Colors.transparent,
+                shadowColor: Colors.transparent,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(80),
                 ),
               ),
               onPressed: () {
-                print('External Camera');
+                print('External Camera Tapped');
               },
-              child: const Text('External Camera'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(200, 300),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              onPressed: () {
-                print('Button2 is Clicked');
-              },
-              child: const Text('Mobile Camera'),
-            ),
+              child: const Text('Connect to External Camera', style: TextStyle(color: Colors.white)),
+            ), 
+            )
           ],
         ),
       ),
