@@ -42,7 +42,7 @@ class HomeState extends State<HomePage> {
           children: [
             Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [Colors.cyan, Colors.blue]),
+                gradient: LinearGradient(colors: [Colors.cyan, Colors.red]),
                 borderRadius: BorderRadius.circular(100)
               ),
               
