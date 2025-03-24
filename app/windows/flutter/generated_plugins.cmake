@@ -3,6 +3,11 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+<<<<<<< HEAD:app/windows/flutter/generated_plugins.cmake
+=======
+  flutter_tts
+  permission_handler_windows
+>>>>>>> main:echovision/windows/flutter/generated_plugins.cmake
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
