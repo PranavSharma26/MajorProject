@@ -1,3 +1,0 @@
-Major Project Ideas... 
-1. Fall Detection for Older Peoples.
-2. Optimized Book Allocation in Library.
