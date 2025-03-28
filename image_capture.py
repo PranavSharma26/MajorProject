@@ -4,7 +4,7 @@ import os
 
 millis = lambda: int(round(time.time() * 1000))
 
-esp32_cam_url = "http://192.168.11.185:81/stream"
+esp32_cam_url = "http://192.168.147.185:81/stream"
 dataset_path = "Dataset"
 
 image_count = 0
