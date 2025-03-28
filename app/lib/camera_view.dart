@@ -9,7 +9,7 @@ class CameraViewPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'ESP32-CAM Live Feed',
+          'Camera View',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
         ),
         backgroundColor: Colors.blue,
