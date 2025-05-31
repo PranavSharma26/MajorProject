@@ -37,7 +37,7 @@ export const dbConnect = async () => {
   }
 };
 
-export const getDB = async (db) => {
+export const getDB = async () => {
   if (!db) await dbConnect();
   return db;
 };

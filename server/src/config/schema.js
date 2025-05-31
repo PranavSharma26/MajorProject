@@ -5,8 +5,9 @@ export const createTables = async (db) => {
 			firstName VARCHAR(20),
 			lastName VARCHAR(20),
 			age INT(3),
-			phone INT(15) UNIQUE,
-			subscription VARCHAR(10)
+			phoneNo VARCHAR(15) UNIQUE,
+			subscription VARCHAR(10),
+			password VARCHAR(300) NOT NULL
     )    
   `)
 }
