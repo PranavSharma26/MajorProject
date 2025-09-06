@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "EchoVision.app"
-               BlueprintName = "EchoVision"
-               ReferencedContainer = "container:EchoVision.xcodeproj">
+               BuildableName = "echovision.app"
+               BlueprintName = "echovision"
+               ReferencedContainer = "container:echovision.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "EchoVisionTests.xctest"
-               BlueprintName = "EchoVisionTests"
-               ReferencedContainer = "container:EchoVision.xcodeproj">
+               BuildableName = "echovisionTests.xctest"
+               BlueprintName = "echovisionTests"
+               ReferencedContainer = "container:echovision.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "EchoVision.app"
-            BlueprintName = "EchoVision"
-            ReferencedContainer = "container:EchoVision.xcodeproj">
+            BuildableName = "echovision.app"
+            BlueprintName = "echovision"
+            ReferencedContainer = "container:echovision.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "EchoVision.app"
-            BlueprintName = "EchoVision"
-            ReferencedContainer = "container:EchoVision.xcodeproj">
+            BuildableName = "echovision.app"
+            BlueprintName = "echovision"
+            ReferencedContainer = "container:echovision.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
