@@ -100,15 +100,32 @@ export default function HomeScreen() {
 
       const mappedResults = confidences.map((conf, idx) => ({
         className: classNames[idx] || `class${idx}`,
-        confidence: conf,
+        confidence: Math.round(conf),
       })).filter(item => item.confidence > 0);
+      
+      
+      console.log(mappedResults);
 
+      // Sorting top 3 prior classes based on confidence
+      mappedResults.sort((a, b) => a.confidence < b.confidence);
+
+      console.log(mappedResults);
+      mappedResults.splice(3);
+      
       setResults(mappedResults);
 
       // TTS speak detected objects
       if (mappedResults.length > 0) {
-        const detectedText = mappedResults.map(obj => `${obj.className} ${obj.confidence}`).join(", ");
-        Tts.speak(`Detected: ${detectedText}`);
+        // const detectedText = mappedResults.map(obj => `${obj.className} ${obj.confidence}`).join(", ");
+        let detectedText = "";
+        for(let obj of mappedResults){
+          detectedText += obj.className;
+          detectedText += ', '
+        }
+
+        console.log(`Detected: ${detectedText} ahead!`);
+
+        Tts.speak(`Detected: ${detectedText} ahead! Take care!!`);
       } else {
         Tts.speak("No harmful objects detected");
       }
@@ -129,6 +146,7 @@ export default function HomeScreen() {
       setIsActive(true);
       Tts.speak("Camera started");
       // Wait 1 second before first capture
+      Tts.speak("Detecting top 3 confidence prior classes, for now");
       setTimeout(() => captureAndPredict(), 1000);
       intervalRef.current = setInterval(() => captureAndPredict(), 10000); // every 10s
     }
