@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { 
-  View, Text, StyleSheet, Platform, PermissionsAndroid, 
-  ActivityIndicator, TouchableOpacity 
+import {
+  View, Text, StyleSheet, Platform, PermissionsAndroid,
+  ActivityIndicator, TouchableOpacity, Image
 } from "react-native";
 import { Camera, useCameraDevices } from "react-native-vision-camera";
 import { loadTensorflowModel } from "react-native-fast-tflite";
@@ -24,10 +24,19 @@ export default function HomeScreen() {
   const device = devices.back || Object.values(devices).find(d => d.position === "back");
 
   const classNames = [
-    "animal","autorickshaw","bicycle","bus","car","caravan",
-    "motorcycle","person","rider","traffic light","traffic sign",
-    "trailer","train","truck","vehicle fallback"
+    "person", "bicycle", "car", "motorcycle", "airplane", "bus", "train", "truck", "boat",
+    "traffic light", "fire hydrant", "stop sign", "parking meter", "bench",
+    "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe",
+    "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard",
+    "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard",
+    "tennis racket", "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl",
+    "banana", "apple", "sandwich", "orange", "broccoli", "carrot", "hot dog", "pizza",
+    "donut", "cake", "chair", "couch", "potted plant", "bed", "dining table", "toilet",
+    "tv", "laptop", "mouse", "remote", "keyboard", "cell phone", "microwave", "oven",
+    "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors", "teddy bear",
+    "hair drier", "toothbrush"
   ];
+
 
   // Request camera permission
   useEffect(() => {
@@ -44,11 +53,12 @@ export default function HomeScreen() {
     })();
   }, []);
 
+
   // Load TFLite model
   useEffect(() => {
     (async () => {
       try {
-        const loadedModel = await loadTensorflowModel(require("../assets/finalbest_float32.tflite"));
+        const loadedModel = await loadTensorflowModel(require("../assets/yolo11n_float32.tflite"));
         setModel(loadedModel);
         console.log("TFLite model loaded!");
       } catch (err) {
@@ -69,71 +79,83 @@ export default function HomeScreen() {
       console.log("Captured photo object:", photo);
       setBuffer(photo.path);
 
+      const base64String = await RNFS.readFile(photo.path, "base64");
+
+      const base64Image = {
+        base64Path: base64String
+      }
+
+      let result = "";
+      // Call to python server for inference
+      try {
+        const res = await fetch("http://10.41.22.204:5000/", {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify(base64Image)
+        })
+
+        result = await res.text();
+        
+        console.log("Result is:", result);
+      }
+      catch (err) {
+        console.log("Error in running inference:", err);
+      }
+
+
       // Resize to model input
-      const resized = await ImageResizer.createResizedImage(photo.path, 192, 192, "JPEG", 100);
+      // const resized = await ImageResizer.createResizedImage(photo.path, 320, 320, "JPEG", 100);
+      // const resized = await ImageResizer.createResizedImage(photo.path, 320, 320, "JPEG", 100);
 
       // Read image as base64
-      const base64String = await RNFS.readFile(resized.uri, "base64");
+      // const base64String = await RNFS.readFile(resized.uri, "base64");
 
       // Convert base64 to Uint8Array
-      const raw = toByteArray(base64String);
+      // const raw = toByteArray(base64String);
 
-      // Convert to Float32 and normalize
-      const floatInput = new Float32Array(raw.length);
-      for (let i = 0; i < raw.length; i++) {
-        floatInput[i] = raw[i] / 255.0;
-      }
+      // // Convert to Float32 and normalize
+      // const floatInput = new Float32Array(raw.length);
+      // for (let i = 0; i < raw.length; i++) {
+      //   floatInput[i] = raw[i] / 255.0;
+      // }
 
       // Wrap in array if model expects batch dimension
-      const inputArray = [floatInput];
+      // const inputArray = [floatInput];
 
       // Run inference
-      const output = await model.run(inputArray);
-      console.log("Raw model output:", output);
+      // let output = await model.run(inputArray);
+      // setResults(output);
+      // output = output[0];
 
-      // Aggregate output per class
-      let confidences = [];
-      if (output && output.length > 0) {
-        const obj = output[0];
-        confidences = classNames.map((_, idx) => obj[idx] || 0);
-      }
+      // if(JSON.stringify(prev_sliced) === JSON.stringify(output))
+      //   console.log("ALERT");
+      // else console.log("No alert");
 
-      const mappedResults = confidences.map((conf, idx) => ({
-        className: classNames[idx] || `class${idx}`,
-        confidence: Math.round(conf),
-      })).filter(item => item.confidence > 0);
-      
-      
-      console.log(mappedResults);
-
-      // Sorting top 3 prior classes based on confidence
-      mappedResults.sort((a, b) => a.confidence < b.confidence);
-
-      console.log(mappedResults);
-      mappedResults.splice(3);
-      
-      setResults(mappedResults);
+      // prev_sliced = output;
 
       // TTS speak detected objects
-      if (mappedResults.length > 0) {
-        // const detectedText = mappedResults.map(obj => `${obj.className} ${obj.confidence}`).join(", ");
-        let detectedText = "";
-        for(let obj of mappedResults){
-          detectedText += obj.className;
-          detectedText += ', '
-        }
+      // if (topResults.length > 0) {
+      // const detectedText = mappedResults.map(obj => `${obj.className} ${obj.confidence}`).join(", ");
+      let detectedText = "";
+      // for (let obj of topResults) {
+      //   detectedText += obj.className;
+      //   detectedText += ', '
+      // }
 
-        console.log(`Detected: ${detectedText} ahead!`);
+      console.log(`Detected: ${detectedText} ahead!`);
 
-        Tts.speak(`Detected: ${detectedText} ahead! Take care!!`);
-      } else {
-        Tts.speak("No harmful objects detected");
+      if(result === ""){
+        Tts.speak("No harmful objects!");
       }
+      else  Tts.speak(`Detected: ${result} ahead! Take care!!`);
 
     } catch (err) {
       console.error("Capture/Inference error:", err);
     }
   };
+
 
   // Start/stop loop
   const toggleCamera = () => {
